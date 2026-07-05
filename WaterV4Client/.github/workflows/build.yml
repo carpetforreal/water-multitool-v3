@@ -1,0 +1,30 @@
+name: Build WaterV4 Client
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Set up JDK 17
+        uses: actions/setup-java@v3
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+      
+      - name: Build with Gradle
+        run: |
+          cd WaterV4Client
+          chmod +x gradlew
+          ./gradlew build
+      
+      - name: Upload JAR
+        uses: actions/upload-artifact@v3
+        with:
+          name: WaterV4Client-JAR
+          path: WaterV4Client/build/libs/*.jar
